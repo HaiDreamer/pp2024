@@ -59,7 +59,7 @@ with open(file_name, "w") as file:  #write mode
             "id": student.id,
             "name": student.name,
             "dob": student.dob.strftime("%Y-%m-%d"),    #convert date into string
-            "course": [{"id": course_id, "mark": course_mark} for course in student.courses]    #error here !
+            "course": [{"id": course.id, "mark": course.mark} for course in student.courses] 
         }
         for student in students
     ]
