@@ -1,0 +1,6 @@
+Student ID: 22ba13121, Name: Hai, DOB: 2004-04-01 00:00:00
+Course ID: 2.001, Mark: 15.0
+Course ID: 2.002, Mark: 13.0
+Student ID: 22bi13131, Name: Hieu, DOB: 2005-04-09 00:00:00
+Course ID: 2.001, Mark: 14.0
+Course ID: 2.002, Mark: 12.0
