@@ -10,27 +10,31 @@ def get_date():
         except ValueError:
             print("Invalid format, enter again.")
 
-class id:
-    def __init__(self, id):
+class att:
+    def __init__(self, id, name):
         self.__id = id
+        self.name = name
     def set_id(self, id):
         self.__id = id
-    def _get_id(self):
+    def get_id(self):
         return self.__id
+    def set_name(self, name):
+        self.name = name
+    def get_name(self):
+        return self.name
         
-class course(id):
-    def __init__(self, id, mark):       #constructor
-        super().__init__(id)
+class course(att):
+    def __init__(self, id, name, mark):       #constructor
+        super().__init__(id, name)
         self.__mark = mark
     def set_mark(self, mark):
         self.__mark = mark
-    def _get_mark(self):
+    def get_mark(self):
         return self.__mark
 
-class student(id):
+class student(att):
     def __init__(self, id, name, dob): 
-        super().__init__(id)
-        self.name = name
+        super().__init__(id, name)
         self.dob = dob
         self.__courses = []
     def add_course(self, course):     #add single course
@@ -66,19 +70,20 @@ for i in range (num_student):   #no need to fix
     num_course = int(input("Number of course(s): "))
     for j in range (num_course):
         course_id = str(input("Enter course_id: "))
+        course_name = str(input("Enter name of course: "))
         course_mark = float(input("Enter mark: "))
-        cou = course(course_id, course_mark)
+        cou = course(course_id, course_name, course_mark)
         stu.add_course(cou)
 
-file_name = "students_data.json"
+file_name = "lab3output.json"
 
 with open(file_name, "w") as f: 
     data_to_save = [
         {
-            "id": student._get_id(),
+            "id": student.get_id(),
             "name": student.name,
             "dob": student.dob.strftime("%Y-%m-%d"),    #convert date into string
-            "course": [{"id": course._get_id(), "mark": course._get_mark()} for course in student.courses] 
+            "course": [{"id": course.get_id(), "name": course.name, "mark": course.get_mark()} for course in student.courses] 
         }
         for student in students
     ]
@@ -90,19 +95,19 @@ def list_courses():
     courses = set()
     for student in students:
         for course in student.courses:
-            courses.add(str(course._get_id())) #set value of course id as a string 
+            courses.add(str(course.get_id())) #set value of course id as a string 
     print("\n".join(courses))
 
 def list_students():
     for student in students:
-        print(f"ID: {student._get_id()}, Name: {student.name}, DOB: {student.dob}")
+        print(f"ID: {student.get_id()}, Name: {student.name}, DOB: {student.dob}")
 
 def show_student_marks(required_course_id):
     print(f"\nMark for course {required_course_id}:")
     for student in students:
         for course in student.courses:
-            if course._get_id() == required_course_id:
-                print(f"Student {student.name} ({student._get_id()}): {course._get_mark()}")
+            if course.get_id() == required_course_id:
+                print(f"Student {student.name} ({student.get_id()}): {course.get_mark()}")
 
 #read information of a file
 with open(file_name, "r") as file:
@@ -113,7 +118,7 @@ with open(file_name, "r") as file:
         student_dob = datetime.strptime(student_data["dob"], "%Y-%m-%d")
         stu = student(student_data["id"], student_data["name"], student_data["dob"]) #init new student object
         for course_data in student_data["course"]:
-            cou = course(course_data["id"], course_data["mark"])
+            cou = course(course_data["id"], course_data["name"], course_data["mark"])
             stu.add_course(cou)
         students.append(stu)    #new student assigned in a list "students"
 

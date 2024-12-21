@@ -63,20 +63,43 @@ print(data)
 def display_courses(data):
     print("\nCourses:")
     courses_ids = set()
-    for std_id, std_info in data.items:
-        courses = std_info.get('Courses', {})
+    for std_id, std_info in data.items():
+        courses = std_info.get("Courses", {})   #check for sub_dictionary course
         courses_ids.update(courses.keys())
     courses_ids = list(courses_ids)     #convert it into list
     print(courses_ids)
 
 def display_students(data):
     print("\nStudents: ")
-    students_names = set()
-    for std_id, std_info in data.items:
-        names = std_info.get('Name', {})
-        students_names.update(names.keys())
+    students_names = []
+    for std_id, std_info in data.items():
+        name = std_info.get("Name", "") #"" meaning that name inside it
+        students_names.append(name)     #add name of student into the list
     students_names = list(students_names)
     print(students_names)
 
-display_courses(data)
-display_students(data)
+def display_mark(data, cr_id):
+    for std_id, std_info in data.items():
+        courses = std_info.get("Courses", {})
+        if cr_id in courses:    #check if cr_id exists in the keys
+            print(f"{std_id} has score of this course is {courses[cr_id]}") #access value in courses (mark)
+
+while True:
+    print("\nOptions:")
+    print("1. List Courses")
+    print("2. List Students")
+    print("3. Show Student Marks for a Given Course")
+    print("4. Exit")
+    choice = int(input("Enter your choice: "))
+    if choice == 1:
+        display_courses(data)
+    elif choice == 2:
+        display_students(data)
+    elif choice == 3:
+        course_id_input = str(input("Enter the course ID: "))
+        display_mark(data, course_id_input)
+    elif choice == 4:
+        print("Exiting program.")
+        break
+    else:
+        print("Invalid choice, please try again.")
