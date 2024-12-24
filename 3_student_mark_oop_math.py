@@ -142,14 +142,14 @@ def show_student_marks(required_course_id):
 '''
 
 #use numpy
-def GPA():
+def GPA():      
     stat = {}
     for student in students:
        scores = [course.get_mark() for course in student.courses]
        score_arr = np.array(scores)
        gpa = np.mean(score_arr) if len(score_arr) > 0 else 0.0
        stat[student.get_id()] = gpa
-    sorted_stat = dict(sorted(stat.items(), key = lambda item: item[1]), reverse = True)
+    sorted_stat = dict(sorted(stat.items(), key = lambda item: item[1], reverse = True))
     listGPA = ""
     for student_id, gpa in sorted_stat.items():
         listGPA += f"{student_id}: {gpa}\n"

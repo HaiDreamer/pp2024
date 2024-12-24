@@ -2,34 +2,34 @@
     {
         "id": "s1",
         "name": "hai",
-        "dob": "2004-05-06",
+        "dob": "2004-03-04",
         "course": [
             {
                 "id": "c1",
                 "name": "math",
-                "mark": 17.0
+                "mark": 12.0
             },
             {
-                "id": "phy",
+                "id": "c2",
                 "name": "phy",
-                "mark": 2.0
+                "mark": 17.0
             }
         ]
     },
     {
         "id": "s2",
         "name": "hoang",
-        "dob": "2004-06-01",
+        "dob": "2004-09-04",
         "course": [
             {
                 "id": "c1",
                 "name": "math",
-                "mark": 38.0
+                "mark": 18.0
             },
             {
                 "id": "c2",
                 "name": "phy",
-                "mark": 19.0
+                "mark": 21.0
             }
         ]
     }
