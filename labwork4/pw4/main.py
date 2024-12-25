@@ -1,1 +1,0 @@
-#main stript for organization

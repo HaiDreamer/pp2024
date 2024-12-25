@@ -15,7 +15,7 @@ def get_date():
 students = []
 num_student = int(input("Enter number of student(s): "))
 
-for i in range (num_student):   #no need to fix 
+for i in range (num_student):  
     print(f"Enter in4 for student #{i + 1}")
     student_id = str(input("Enter student ID: "))
     student_name = str(input("Enter student name: "))

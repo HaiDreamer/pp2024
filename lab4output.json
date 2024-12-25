@@ -2,7 +2,24 @@
     {
         "id": "s1",
         "name": "hai",
-        "dob": "2004-03-04",
+        "dob": "2004-09-08",
+        "course": [
+            {
+                "id": "c1",
+                "name": "math",
+                "mark": 13.0
+            },
+            {
+                "id": "c1",
+                "name": "phy",
+                "mark": 14.0
+            }
+        ]
+    },
+    {
+        "id": "s2",
+        "name": "hoang",
+        "dob": "2005-04-03",
         "course": [
             {
                 "id": "c1",
@@ -12,24 +29,7 @@
             {
                 "id": "c2",
                 "name": "phy",
-                "mark": 17.0
-            }
-        ]
-    },
-    {
-        "id": "s2",
-        "name": "hoang",
-        "dob": "2004-09-04",
-        "course": [
-            {
-                "id": "c1",
-                "name": "math",
-                "mark": 18.0
-            },
-            {
-                "id": "c2",
-                "name": "phy",
-                "mark": 21.0
+                "mark": 19.0
             }
         ]
     }

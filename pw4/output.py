@@ -1,7 +1,6 @@
 from datetime import datetime     
 import json
 import numpy as np
-import curses
 from curses import wrapper 
 
 from domains.course import course
@@ -61,8 +60,8 @@ with open(file_name, "r") as file:
             stu.add_course(cou)
         students.append(stu)    
 
-# Menu for listing (use curse)
-def main(stdscr):
+#for testing without enter more input
+'''def main(stdscr):
     curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_GREEN)
     curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_RED)
     blue_and_green = curses.color_pair(1)
@@ -119,4 +118,4 @@ def main(stdscr):
             stdscr.refresh()
             stdscr.getch()  
 
-wrapper(main)
+wrapper(main)'''
