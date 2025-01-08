@@ -1,5 +1,6 @@
 from datetime import datetime     
 import json
+import os
 from pathlib import Path
 import zlib
 import numpy as np
@@ -53,7 +54,7 @@ def GPA():
 
 #read information of a file
 with open(file_name, "r") as file:
-    loaded_data = json.load(file)  
+    loaded_data = json.load(file)           #error from here !
     students = []                   
     for student_data in loaded_data:        
         student_dob = datetime.strptime(student_data["dob"], "%Y-%m-%d")
@@ -63,41 +64,26 @@ with open(file_name, "r") as file:
             stu.add_course(cou)
         students.append(stu)    
 
-def check_file_exist():
-    file_path = Path("students.dat")
-    if file_path.is_file():
-        depress_file()
-        reload_data()
-    else:
-        print("The file doesn't not exist")
-
-def depress_file():
-    with open("students.dat", "rb") as dat_file:
-        compressed_data = dat_file.read()
-    decompressed_data = zlib.decompress(compressed_data)
-    with open(file_name, "w") as file:
-        file.write(decompressed_data.decode("utf-8"))
-
-def reload_data():
-    global students  # Update the global `students` list
+def depress_file_to_json(dat_file, json_file):
     try:
-        with open(file_name, "r") as file:
-            loaded_data = json.load(file)
-            students = []
-            for student_data in loaded_data:
-                stu = student(student_data["id"], student_data["name"], student_data["dob"])
-                for course_data in student_data["course"]:
-                    cou = course(course_data["id"], course_data["name"], course_data["mark"])
-                    stu.add_course(cou)
-                students.append(stu)
-        print("Data reloaded successfully.")
+        with open(dat_file, "rb") as datFile:
+            compressed_data = datFile.read()
+        decompressed_data = zlib.decompress(compressed_data)
+        decompressed_text = decompressed_data.decode("utf-8")   #decode into a string
+        json_data = json.loads(decompressed_text)
+        with open(json_file, "w") as jsonFile:
+            json.dump(json_data, jsonFile, indent = 4)
+    except FileNotFoundError:
+        print(f"Error: File '{dat_file}' not found.")
+    except zlib.error as e:
+        print(f"Error during decompression: {e}")
+    except json.JSONDecodeError as e:
+        print(f"Error parsing JSON: {e}")
     except Exception as e:
-        print("Failed to reload data:", e)
-
-check_file_exist()      #need to reload file after decompression !
+        print(f"An unexpected error occurred: {e}")
 
 #for testing without enter more input
-def main(stdscr):
+'''def main(stdscr):
     curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_GREEN)
     curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_RED)
     blue_and_green = curses.color_pair(1)
@@ -154,4 +140,4 @@ def main(stdscr):
             stdscr.refresh()
             stdscr.getch()  
 
-wrapper(main)
+wrapper(main)'''
