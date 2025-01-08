@@ -1,12 +1,15 @@
 from datetime import datetime     
 import json
+from pathlib import Path
+import zlib
 import numpy as np
-from curses import wrapper 
+import curses
+from curses import wrapper
 
 from domains.course import course
 from domains.student import student
 
-file_name = "lab4output.json"
+file_name = "lab5output.json"
 
 def list_courses():
     print("\nCourses:")
@@ -60,8 +63,41 @@ with open(file_name, "r") as file:
             stu.add_course(cou)
         students.append(stu)    
 
+def check_file_exist():
+    file_path = Path("students.dat")
+    if file_path.is_file():
+        depress_file()
+        reload_data()
+    else:
+        print("The file doesn't not exist")
+
+def depress_file():
+    with open("students.dat", "rb") as dat_file:
+        compressed_data = dat_file.read()
+    decompressed_data = zlib.decompress(compressed_data)
+    with open(file_name, "w") as file:
+        file.write(decompressed_data.decode("utf-8"))
+
+def reload_data():
+    global students  # Update the global `students` list
+    try:
+        with open(file_name, "r") as file:
+            loaded_data = json.load(file)
+            students = []
+            for student_data in loaded_data:
+                stu = student(student_data["id"], student_data["name"], student_data["dob"])
+                for course_data in student_data["course"]:
+                    cou = course(course_data["id"], course_data["name"], course_data["mark"])
+                    stu.add_course(cou)
+                students.append(stu)
+        print("Data reloaded successfully.")
+    except Exception as e:
+        print("Failed to reload data:", e)
+
+check_file_exist()      #need to reload file after decompression !
+
 #for testing without enter more input
-'''def main(stdscr):
+def main(stdscr):
     curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_GREEN)
     curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_RED)
     blue_and_green = curses.color_pair(1)
@@ -118,4 +154,4 @@ with open(file_name, "r") as file:
             stdscr.refresh()
             stdscr.getch()  
 
-wrapper(main)'''
+wrapper(main)

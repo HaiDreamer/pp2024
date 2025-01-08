@@ -31,7 +31,7 @@ for i in range (num_student):
         cou = course(course_id, course_name, course_mark)
         stu.add_course(cou)
 
-file_name = "lab4output.json"
+file_name = "lab5output.json"
 
 with open(file_name, "w") as f: 
     data_to_save = [
