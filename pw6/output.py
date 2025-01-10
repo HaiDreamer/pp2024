@@ -10,7 +10,7 @@ from curses import wrapper
 from domains.course import course
 from domains.student import student
 
-file_name = "lab5output.json"
+file_name = "lab6output.json"
 students = []  
 
 def list_courses():
@@ -53,21 +53,21 @@ def GPA():
         listGPA += f"{student_id}: {gpa}\n"
     return listGPA 
 
+#using pickle
 def compress_file_to_dat():
     with open(file_name, "r") as jf:
         data = json.load(jf)
-    json_data = json.dumps(data)
-    compressed_data = zlib.compress(json_data.encode("utf-8"))  
-    with open("studentLab5.dat", "wb") as df:
-        df.write(compressed_data)  # Write compressed data
+    serial_data = pickle.dumps(data)
+    compress_data = zlib.compress(serial_data)
+    with open("studentLab6.dat", "wb") as df:
+        df.write(compress_data)  
 
 def depress_file(dat_file):  
     try:
         with open(dat_file, "rb") as datFile:
             compressed_data = datFile.read()
         decompressed_data = zlib.decompress(compressed_data)
-        decompressed_text = decompressed_data.decode("utf-8")   #decode into a string
-        json_data = json.loads(decompressed_text)                 
+        json_data = pickle.loads(decompressed_data)                
         for student_data in json_data:        
             student_dob = datetime.strptime(student_data["dob"], "%Y-%m-%d")
             stu = student(student_data["id"], student_data["name"], student_dob) #init new student object
@@ -86,7 +86,7 @@ def depress_file(dat_file):
 
 #for testing without enter more input
 def main(stdscr):
-    depress_file("studentLab5.dat")
+    depress_file("studentLab6.dat")
     
     curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_GREEN)
     curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_RED)

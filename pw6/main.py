@@ -5,7 +5,7 @@ from input import *
 
 # Menu for listing (use curse)
 def main(stdscr):
-    depress_file("studentLab5.dat")
+    depress_file("studentLab6.dat")
     curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_GREEN)
     curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_RED)
     blue_and_green = curses.color_pair(1)
