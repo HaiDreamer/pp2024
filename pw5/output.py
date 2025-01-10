@@ -1,7 +1,7 @@
+#this file allow run output without enter data again !
 from datetime import datetime     
 import json
-import os
-from pathlib import Path
+import pickle
 import zlib
 import numpy as np
 import curses
@@ -11,6 +11,7 @@ from domains.course import course
 from domains.student import student
 
 file_name = "lab5output.json"
+students = []  
 
 def list_courses():
     print("\nCourses:")
@@ -50,29 +51,30 @@ def GPA():
     listGPA = ""
     for student_id, gpa in sorted_stat.items():
         listGPA += f"{student_id}: {gpa}\n"
-    return listGPA
+    return listGPA 
 
-#read information of a file
-with open(file_name, "r") as file:
-    loaded_data = json.load(file)           #error from here !
-    students = []                   
-    for student_data in loaded_data:        
-        student_dob = datetime.strptime(student_data["dob"], "%Y-%m-%d")
-        stu = student(student_data["id"], student_data["name"], student_data["dob"]) #init new student object
-        for course_data in student_data["course"]:
-            cou = course(course_data["id"], course_data["name"], course_data["mark"])
-            stu.add_course(cou)
-        students.append(stu)    
+def compress_file_to_dat():
+    with open(file_name, "r") as jf:
+        data = json.load(jf)
+    json_data = json.dumps(data)
+    compressed_data = zlib.compress(json_data.encode("utf-8"))  # Compress serialized data
+    with open("students.dat", "wb") as df:
+        df.write(compressed_data)  # Write compressed data
 
-def depress_file_to_json(dat_file, json_file):
+def depress_file(dat_file):  
     try:
         with open(dat_file, "rb") as datFile:
             compressed_data = datFile.read()
         decompressed_data = zlib.decompress(compressed_data)
         decompressed_text = decompressed_data.decode("utf-8")   #decode into a string
-        json_data = json.loads(decompressed_text)
-        with open(json_file, "w") as jsonFile:
-            json.dump(json_data, jsonFile, indent = 4)
+        json_data = json.loads(decompressed_text)                 
+        for student_data in json_data:        
+            student_dob = datetime.strptime(student_data["dob"], "%Y-%m-%d")
+            stu = student(student_data["id"], student_data["name"], student_dob) #init new student object
+            for course_data in student_data["course"]:
+                cou = course(course_data["id"], course_data["name"], course_data["mark"])
+                stu.add_course(cou)
+            students.append(stu) 
     except FileNotFoundError:
         print(f"Error: File '{dat_file}' not found.")
     except zlib.error as e:
@@ -82,14 +84,28 @@ def depress_file_to_json(dat_file, json_file):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
+#read information of a file
+'''with open(file_name, "r") as file:
+    loaded_data = json.load(file)      
+    students = []                   
+    for student_data in loaded_data:        
+        student_dob = datetime.strptime(student_data["dob"], "%Y-%m-%d")
+        stu = student(student_data["id"], student_data["name"], student_data["dob"]) #init new student object
+        for course_data in student_data["course"]:
+            cou = course(course_data["id"], course_data["name"], course_data["mark"])
+            stu.add_course(cou)
+        students.append(stu)   '''
+
 #for testing without enter more input
-'''def main(stdscr):
+def main(stdscr):
+    depress_file("students.dat")
+    
     curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_GREEN)
     curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_RED)
     blue_and_green = curses.color_pair(1)
     yellow_and_red = curses.color_pair(2)
     while True:
-        stdscr.clear()      #clear terminal screen, apply pnly u call stdscr.refresh()
+        stdscr.clear()      #clear terminal screen, apply only u call stdscr.refresh()
         stdscr.addstr(0, 0, "-----------------", blue_and_green)
         stdscr.addstr(1, 0, "Menu options", yellow_and_red)
         stdscr.addstr(2, 0, "1. List courses")
@@ -133,6 +149,7 @@ def depress_file_to_json(dat_file, json_file):
             stdscr.addstr(1, 0, "Exiting program.")
             stdscr.refresh()
             stdscr.getch()
+            compress_file_to_dat()
             break
         else:
             stdscr.clear()
@@ -140,4 +157,4 @@ def depress_file_to_json(dat_file, json_file):
             stdscr.refresh()
             stdscr.getch()  
 
-wrapper(main)'''
+wrapper(main)

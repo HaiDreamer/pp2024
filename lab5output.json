@@ -1,0 +1,36 @@
+[
+    {
+        "id": "s1",
+        "name": "hai",
+        "dob": "2004-07-05",
+        "course": [
+            {
+                "id": "c1",
+                "name": "math",
+                "mark": 19.0
+            },
+            {
+                "id": "c2",
+                "name": "phy",
+                "mark": 17.0
+            }
+        ]
+    },
+    {
+        "id": "s2",
+        "name": "ho",
+        "dob": "2006-03-04",
+        "course": [
+            {
+                "id": "c1",
+                "name": "math",
+                "mark": 18.0
+            },
+            {
+                "id": "c2",
+                "name": "phy",
+                "mark": 16.0
+            }
+        ]
+    }
+]
