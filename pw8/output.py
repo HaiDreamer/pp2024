@@ -3,6 +3,7 @@ import json
 import pickle
 import zlib
 import numpy as np
+import threading
 
 from domains.course import course
 from domains.student import student
@@ -52,12 +53,18 @@ def GPA():
 
 #using pickle
 def compress_file_to_dat():
-    with open(file_name, "r") as jf:
-        data = json.load(jf)
-    serial_data = pickle.dumps(data)
-    compress_data = zlib.compress(serial_data)
-    with open("studentLab6.dat", "wb") as df:
-        df.write(compress_data)  
+    def _compress():
+        try:
+            with open(file_name, "r") as jf:
+                data = json.load(jf)
+            serial_data = pickle.dumps(data)
+            compress_data = zlib.compress(serial_data)
+            with open("studentLab6.dat", "wb") as df:
+                df.write(compress_data) 
+        except Exception as e:
+            print(f"[❌] Error: {e}") 
+    thread = threading.Thread(target=_compress, daemon=True)
+    thread.start()
 
 def depress_file(dat_file):  
     try:
