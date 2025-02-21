@@ -59,12 +59,13 @@ def compress_file_to_dat():
     with open("studentLab6.dat", "wb") as df:
         df.write(compress_data)  
 
-def depress_file(dat_file):  
+def depress_file(dat_file):  #both decompress and read json file
     try:
         with open(dat_file, "rb") as datFile:
             compressed_data = datFile.read()
         decompressed_data = zlib.decompress(compressed_data)
-        json_data = pickle.loads(decompressed_data)                
+        json_data = pickle.loads(decompressed_data)   
+        #read json file             
         for student_data in json_data:        
             student_dob = datetime.strptime(student_data["dob"], "%Y-%m-%d")
             stu = student(student_data["id"], student_data["name"], student_dob) #init new student object

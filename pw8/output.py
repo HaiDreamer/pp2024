@@ -64,7 +64,8 @@ def compress_file_to_dat():
         except Exception as e:
             print(f"[❌] Error: {e}") 
     thread = threading.Thread(target=_compress, daemon=True)
-    thread.start()
+    #daemon=True makes this thread a daemon thread, meaning it will automatically exit when the main program ends.
+    thread.start()  #starting the thread
 
 def depress_file(dat_file):  
     try:
